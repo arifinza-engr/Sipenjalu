@@ -1,2 +1,4 @@
-# TUGAS-AKHIR-Sipenjalu
-Repo TA terbaru fixxxx
+# Sipenjalu
+
+admin = 123
+petugas = 123
