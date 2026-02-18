@@ -1,7 +1,9 @@
 <?php
 if(isset($_GET['kode'])){
-            $sql_hapus = "DELETE FROM tb_jenis WHERE id_jenis='".$_GET['kode']."'";
-            $query_hapus = mysqli_query($koneksi, $sql_hapus);
+            $stmt = $koneksi->prepare("DELETE FROM tb_jenis WHERE id_jenis=?");
+            $stmt->bind_param("s", $_GET['kode']);
+            $query_hapus = $stmt->execute();
+            $stmt->close();
 
             if ($query_hapus) {
                 echo "<script>

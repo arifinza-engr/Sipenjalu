@@ -9,8 +9,9 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25em;
-    border: 1px solid #000;
+    border-radius: .6em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 .label[href]:hover,
 .label[href]:focus {
@@ -31,14 +32,14 @@
     background-color: #808080;
 }
 .label-primary {
-    background-color: #0088ff;
+    background-color: #1c7ce5;
 }
 .label-primary[href]:hover,
 .label-primary[href]:focus {
     background-color: #3071a9;
 }
 .label-success {
-    background-color: #5cb85c;
+    background-color: #1da870;
 }
 .label-success[href]:hover,
 .label-success[href]:focus {
@@ -52,7 +53,7 @@
     background-color: #31b0d5;
 }
 .label-warning {
-    background-color: #ffc400;
+    background-color: #f0a500;
 }
 .label-warning[href]:hover,
 .label-warning[href]:focus {

@@ -45,12 +45,18 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
 
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SIPENJALU</title>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('sipenjalu-theme');
+      document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
+    })();
+  </script>
 
   <!-- my css -->
   <link rel="stylesheet" href="assets/css/style1.css">
@@ -59,6 +65,7 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
   <!-- Bootstrap 5.3.2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <!-- sweet alert -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -79,11 +86,11 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-light fixed-top" id="navbar">
+  <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
     <div class="container">
       <a class="navbar-brand" href="index">
         <img src="assets/img/tittle.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-        <span id="text-brand">KABUPATEN PEMALANG</span>
+        <span id="text-brand">SIPENJALU</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -142,6 +149,12 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
             </li>
           <?php endif; ?>
 
+          <li class="nav-item ms-3">
+            <span class="navbar-text text-muted me-3">
+              <?php echo htmlspecialchars($data_nama); ?> (<?php echo htmlspecialchars($data_level); ?>)
+            </span>
+          </li>
+
           <?php if ($data_level == "Administrator" || $data_level == "Petugas") : ?>
             <a class="btn btn-danger fw-bold buttonLogout" type="button" href="?page=logout">LOGOUT</a>
           <?php endif; ?>
@@ -155,95 +168,91 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
     </div>
   </nav>
 
-  <div class="slider_area">
-    <div class="slider_active owl-carousel">
-      <!-- single_carouse -->
-      <div class="single_slider d-flex align-items-center jumbotron">
-        <div class="container">
-          <div class="row justify-content-center"> <!-- Tambahkan "justify-content-center" untuk mengatur konten ke tengah -->
-            <div class="col-12">
-              <div class="slider_text text-center"> <!-- Tambahkan "text-center" untuk mengatur teks ke tengah -->
-                <h1 class="text-white" id="text-sipenjalu">SIPENJALU</h1>
-                <h2 class="text-white" id="header-text">APLIKASI PENGADUAN PENERANGAN JALAN UMUM BERBASIS WEB MENGGUNAKAN REAL TIME NOTIFIKASI WHATSAPP</h2>
-                <img src="" alt="" id="logosmp1" class="img-fluid"> <!-- Tambahkan "img-fluid" untuk responsifitas gambar -->
+  <div class="theme-switch-wrapper">
+    <button class="btn theme-toggle" type="button" id="themeToggle" aria-label="Toggle theme">
+      <i class="fas fa-moon"></i>
+    </button>
+  </div>
+
+  <main class="main-content">
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center align-items-start h-100">
+        <div class="col-xl-12">
+          <div class="card rounded-3 text-black shadow-lg mb-4">
+            <div class="card-body p-md-5">
+              <div class="text-center mb-4">
+                <img src="assets/img/tittle.png" alt="Logo" class="mb-3" style="max-width: 200px;" />
+                <h2 class="mb-3 text-white">Dashboard SIPENJALU</h2>
+                <p class="text-white">Selamat datang, <?php echo htmlspecialchars($data_nama); ?> (<?php echo htmlspecialchars($data_level); ?>)</p>
               </div>
+
+              <?php
+              // Define an associative array to map page requests to file paths.
+              $pageMap = [
+                'admin-def' => 'default/admin.php',
+                'petugas-def' => 'default/tugas.php',
+                'pengadu' => 'default/pengadu.php',
+                'user_data' => 'admin/pengguna/pengguna_tampil.php',
+                'pengguna_tambah' => 'admin/pengguna/pengguna_tambah.php',
+                'pengguna_ubah' => 'admin/pengguna/pengguna_ubah.php',
+                'pedu_ubah' => 'admin/pengguna/pedu_ubah.php',
+                'pengguna_hapus' => 'admin/pengguna/pengguna_hapus.php',
+                'jenis_view' => 'admin/jenis/jenis_tampil.php',
+                'jenis_tambah' => 'admin/jenis/jenis_tambah.php',
+                'jenis_ubah' => 'admin/jenis/jenis_ubah.php',
+                'jenis_hapus' => 'admin/jenis/jenis_hapus.php',
+                'pengadu_view' => 'admin/pengadu/pengadu_tampil.php',
+                'pengadu_tambah' => 'admin/pengadu/pengadu_tambah.php',
+                'pengadu_ubah' => 'admin/pengadu/pengadu_ubah.php',
+                'pengadu_hapus' => 'admin/pengadu/pengadu_hapus.php',
+                'aduan_admin' => 'admin/aduan/adu_tampil.php',
+                'aduan_admin_semua' => 'admin/aduan/adu_tampil_semua.php',
+                'aduan_admin_tanggap' => 'admin/aduan/adu_tanggap.php',
+                'aduan_admin_selesai' => 'admin/aduan/adu_selesai.php',
+                'aduan_kelola' => 'admin/aduan/adu_ubah.php',
+                'api' => 'admin/api/api.php',
+                'laporan' => 'admin/laporan/laporan.php',
+                'logout' => 'logout.php',
+                'aduan_view' => 'pengadu/aduan/adu_tampil.php',
+                'aduan_tambah' => 'pengadu/aduan/adu_tambah.php',
+                'aduan_ubah' => 'pengadu/aduan/adu_ubah.php',
+                'aduan_hapus' => 'pengadu/aduan/adu_hapus.php',
+                'regis' => 'regis.php'
+              ];
+
+              // Define an array for default pages based on user level
+              $defaultPages = [
+                'Administrator' => 'default/admin.php',
+                'Petugas' => 'default/tugas.php',
+                'Pengadu' => 'default/pengadu.php'
+              ];
+
+              // Get the requested page from the URL query parameter.
+              $hal = $_GET['page'] ?? null;
+
+              // Include the appropriate file based on the request, or go to the default page based on user level.
+              if (isset($pageMap[$hal])) {
+                include $pageMap[$hal];
+              } elseif (isset($defaultPages[$data_level])) {
+                include $defaultPages[$data_level];
+              } else {
+                echo "<center><h1> ERROR !</h1></center>";
+              }
+
+              ?>
             </div>
           </div>
         </div>
       </div>
-      <!--/ single_carouse -->
     </div>
-  </div>
-
-  <?php
-  // Define an associative array to map page requests to file paths.
-  $pageMap = [
-    'admin-def' => 'default/admin.php',
-    'petugas-def' => 'default/tugas.php',
-    'pengadu' => 'default/pengadu.php',
-    'user_data' => 'admin/pengguna/pengguna_tampil.php',
-    'pengguna_tambah' => 'admin/pengguna/pengguna_tambah.php',
-    'pengguna_ubah' => 'admin/pengguna/pengguna_ubah.php',
-    'pedu_ubah' => 'admin/pengguna/pedu_ubah.php',
-    'pengguna_hapus' => 'admin/pengguna/pengguna_hapus.php',
-    'jenis_view' => 'admin/jenis/jenis_tampil.php',
-    'jenis_tambah' => 'admin/jenis/jenis_tambah.php',
-    'jenis_ubah' => 'admin/jenis/jenis_ubah.php',
-    'jenis_hapus' => 'admin/jenis/jenis_hapus.php',
-    'pengadu_view' => 'admin/pengadu/pengadu_tampil.php',
-    'pengadu_tambah' => 'admin/pengadu/pengadu_tambah.php',
-    'pengadu_ubah' => 'admin/pengadu/pengadu_ubah.php',
-    'pengadu_hapus' => 'admin/pengadu/pengadu_hapus.php',
-    'aduan_admin' => 'admin/aduan/adu_tampil.php',
-    'aduan_admin_semua' => 'admin/aduan/adu_tampil_semua.php',
-    'aduan_admin_tanggap' => 'admin/aduan/adu_tanggap.php',
-    'aduan_admin_selesai' => 'admin/aduan/adu_selesai.php',
-    'aduan_kelola' => 'admin/aduan/adu_ubah.php',
-    'api' => 'admin/api/api.php',
-    'laporan' => 'admin/laporan/laporan.php',
-    'logout' => 'logout.php',
-    'aduan_view' => 'pengadu/aduan/adu_tampil.php',
-    'aduan_tambah' => 'pengadu/aduan/adu_tambah.php',
-    'aduan_ubah' => 'pengadu/aduan/adu_ubah.php',
-    'aduan_hapus' => 'pengadu/aduan/adu_hapus.php',
-    'regis' => 'regis.php'
-  ];
-
-  // Define an array for default pages based on user level
-  $defaultPages = [
-    'Administrator' => 'default/admin.php',
-    'Petugas' => 'default/tugas.php',
-    'Pengadu' => 'default/pengadu.php'
-  ];
-
-  // Get the requested page from the URL query parameter.
-  $hal = $_GET['page'] ?? null;
-
-  // Include the appropriate file based on the request, or go to the default page based on user level.
-  if (isset($pageMap[$hal])) {
-    include $pageMap[$hal];
-  } elseif (isset($defaultPages[$data_level])) {
-    include $defaultPages[$data_level];
-  } else {
-    echo "<center><h1> ERROR !</h1></center>";
-  }
-
-  ?>
+  </main>
 
   <!-- Footer -->
-  <footer class="bg-infooo text-center text-white" id="footer">
-    <div class="container p-4 pb-0">
-      <section class="mb-4">
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-linkedin-in"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
-      </section>
-    </div>
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      Copyright © SIPENJALU 2023 All rights reserved
+  <footer class="text-center text-muted mt-5" id="footer">
+    <div class="container">
+      <div class="py-3">
+        <p class="mb-0">Copyright &copy; SIPENJALU 2023 All rights reserved</p>
+      </div>
     </div>
   </footer>
   <!-- End -->
@@ -254,6 +263,27 @@ $api_whatsapp = getApiKey($koneksi, 'WhatsApp Fonnte API');
 
   <!-- Bootstrap 5.3.2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+
+      function updateIcon(theme) {
+        const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+        toggle.innerHTML = '<i class="fas ' + icon + '"></i>';
+      }
+
+      if (toggle) {
+        updateIcon(root.getAttribute('data-theme'));
+        toggle.addEventListener('click', function() {
+          const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', nextTheme);
+          localStorage.setItem('sipenjalu-theme', nextTheme);
+          updateIcon(nextTheme);
+        });
+      }
+    })();
+  </script>
 
 </body>
 
