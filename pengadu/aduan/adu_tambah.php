@@ -1,5 +1,5 @@
 <?php
-$author = $data_id;
+$author = $userData['id'];
 
 function sendMessage($token, $target, $message)
 {
@@ -22,40 +22,38 @@ function sendMessage($token, $target, $message)
     ),
   ));
   $response = curl_exec($curl);
-  curl_close($curl);
   return $response;
 }
 
 ?>
 
-<div class="container mt-4 mb-4">
-  <div class="card">
-    <div class="card-header bg-infooo text-white">
-      <i class="bi bi-plus-lg"></i>
-      <strong>Tambah Aduan</strong>
-    </div>
-    <div class="card-body">
-      <form method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="judul" class="form-label">Nama Anda</label>
-          <input type="text" class="form-control" name="judul" id="judul" placeholder="Masukan Nama Anda" required>
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-white mb-2">Tambah Aduan</h2>
+        <p class="text-white/70">Isi formulir untuk mengirim pengaduan baru</p>
+      </div>
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        <div>
+          <label class="block text-white font-medium mb-2">Nama Anda</label>
+          <input type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary-500" name="judul" id="judul" placeholder="Masukan Nama Anda" required>
         </div>
-        <div class="mb-3">
-          <label for="no_telpon" class="form-label">No Hp/Whatsapp</label>
-          <input type="text" class="form-control" name="no_telpon" id="no_telpon" placeholder="Masukan Nomor Aktif" required>
+        <div>
+          <label class="block text-white font-medium mb-2">No Hp/Whatsapp</label>
+          <input type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary-500" name="no_telpon" id="no_telpon" placeholder="Masukan Nomor Aktif" required>
         </div>
-        <hr class="custom-hr">
-        <div class="mb-3">
-          <label for="jenis" class="form-label">Jenis Aduan</label>
-          <select name="jenis" class="form-control" id="jenis">
-            <option value="">- Pilih -</option>
+        <div>
+          <label class="block text-white font-medium mb-2">Jenis Aduan</label>
+          <select name="jenis" class="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary-500" id="jenis">
+            <option value="" class="bg-slate-800">- Pilih -</option>
             <?php
             // ambil data dari database
             $query = "select * from tb_jenis";
             $hasil = mysqli_query($koneksi, $query);
             while ($row = mysqli_fetch_array($hasil)) {
             ?>
-              <option value="<?php echo $row['id_jenis'] ?>">
+              <option value="<?php echo $row['id_jenis'] ?>" class="bg-slate-800">
                 <?php echo $row['jenis'];  ?>
               </option>
             <?php
@@ -63,22 +61,23 @@ function sendMessage($token, $target, $message)
             ?>
           </select>
         </div>
-        <div class="mb-3">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mapModal">Pilih Lokasi</button>
+        <div>
+          <label class="block text-white font-medium mb-2">Lokasi</label>
+          <button type="button" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors" data-bs-toggle="modal" data-bs-target="#mapModal">Pilih Lokasi</button>
           <input type="hidden" id="hiddenLat" name="lat">
           <input type="hidden" id="hiddenLng" name="lng">
         </div>
-        <div class="mb-3">
-          <label for="keterangan" class="form-label">Keterangan</label>
-          <textarea class="form-control" name="keterangan" id="keterangan" rows="4" placeholder="Keterangan Aduan" required></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="foto" class="form-label">Foto</label>
-          <input type="file" class="form-control" name="foto" id="foto" required>
+        <div>
+          <label class="block text-white font-medium mb-2">Keterangan</label>
+          <textarea class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none" name="keterangan" id="keterangan" rows="4" placeholder="Keterangan Aduan" required></textarea>
         </div>
         <div>
-          <input type="submit" name="Simpan" value="Simpan" class="btn btn-primary">
-          <a href="?page=aduan_view" class="btn btn-secondary">Batal</a>
+          <label class="block text-white font-medium mb-2">Foto</label>
+          <input type="file" class="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 file:bg-primary-500 file:text-white file:border-none file:rounded file:px-3 file:py-1 file:mr-3" name="foto" id="foto" required>
+        </div>
+        <div class="flex gap-4">
+          <input type="submit" name="Simpan" value="Simpan" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors flex-1">
+          <a href="?page=aduan_view" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex-1 text-center">Batal</a>
         </div>
       </form>
     </div>
