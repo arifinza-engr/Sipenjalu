@@ -67,7 +67,7 @@ if (isset($_POST['btnLogin'])) {
                 <div class="col-lg-6">
                   <div class="card-body p-md-5 mx-md-4">
                     <div class="text-center">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 150px;" alt="logo">
+                      <img src="https://images.vexels.com/media/users/3/156814/isolated/preview/3905419df3d4ee163e00f778b6110da6-lotus-symbol-icon.png" style="width: 50px;" alt="logo">
                       <h4 class="mt-1 mb-5 pb-1">SIPENJALU</h4>
                     </div>
                     <div class="text-center">
