@@ -20,8 +20,8 @@
           </thead>
           <tbody>
             <?php
-
-            $author = $data_id;
+            global $userData;
+            $author = $userData['id'];
             $no = 1;
             $sql = $koneksi->query("SELECT a.id_pengaduan, a.judul, a.lat, a.lng, a.foto, a.status, j.jenis FROM tb_pengaduan a JOIN tb_jenis j ON a.jenis=j.id_jenis WHERE author='$author'");
             while ($data = $sql->fetch_assoc()) :
