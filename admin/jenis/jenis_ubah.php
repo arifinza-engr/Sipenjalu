@@ -1,9 +1,12 @@
 <?php
 
 if (isset($_GET['kode'])) {
-  $sql_cek = "SELECT * FROM tb_jenis WHERE id_jenis='" . $_GET['kode'] . "'";
-  $query_cek = mysqli_query($koneksi, $sql_cek);
-  $data_cek = mysqli_fetch_array($query_cek, MYSQLI_BOTH);
+  $stmt = $koneksi->prepare("SELECT * FROM tb_jenis WHERE id_jenis=?");
+  $stmt->bind_param("s", $_GET['kode']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $data_cek = $result->fetch_array(MYSQLI_BOTH);
+  $stmt->close();
 }
 ?>
 
@@ -44,9 +47,10 @@ if (isset($_GET['kode'])) {
 
 if (isset($_POST['Ubah'])) {
 
-  $sql_ubah = "UPDATE tb_jenis SET
-        jenis='" . $_POST['jenis'] . "' WHERE id_jenis='" . $_POST['id_jenis'] . "'";
-  $query_ubah = mysqli_query($koneksi, $sql_ubah);
+  $stmt = $koneksi->prepare("UPDATE tb_jenis SET jenis=? WHERE id_jenis=?");
+  $stmt->bind_param("ss", $_POST['jenis'], $_POST['id_jenis']);
+  $query_ubah = $stmt->execute();
+  $stmt->close();
   if ($query_ubah) {
     echo "<script>
         Swal.fire({title: 'Ubah Sukses',text: '',icon: 'success',confirmButtonText: 'OK'

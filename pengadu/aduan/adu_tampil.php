@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+        <table class="table table-bordered" id="dataTables-example">
           <thead>
             <tr>
               <th>No</th>
@@ -37,23 +37,7 @@
                 </td>
 
                 <td>
-                  <!-- Image thumbnail that triggers the modal -->
-                  <img src="foto/<?= $data['foto']; ?>" width="100px" data-bs-toggle="modal" data-bs-target="#imageModal<?= $no ?>" role="button" tabIndex="0" />
-                  <!-- The Modal -->
-                  <div class="modal fade" id="imageModal<?= $no ?>">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <!-- Modal body -->
-                        <div class="modal-body text-center">
-                          <img src="foto/<?= $data['foto']; ?>" style="width: 100%;" alt="Image Preview">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img src="/Sipenjalu/foto/<?= $data['foto']; ?>" width="100px" />
 
                 <td class='text-center align-middle'>
                   <?php
@@ -81,3 +65,9 @@
     </div>
   </div>
 </div>
+
+
+
+<script>
+
+</script>

@@ -6,11 +6,14 @@ if (isset($_POST['btnLogin'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
 
-  // Lakukan query untuk mencari user
-  $sql_login = "SELECT * FROM tb_pengguna WHERE username='$username' AND password='$password'";
-  $query_login = mysqli_query($koneksi, $sql_login);
-  $data_login = mysqli_fetch_assoc($query_login);
-  $jumlah_login = mysqli_num_rows($query_login);
+  // Gunakan prepared statement untuk mencegah SQL injection
+  $stmt = $koneksi->prepare("SELECT * FROM tb_pengguna WHERE username=? AND password=?");
+  $stmt->bind_param("ss", $username, $password);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $data_login = $result->fetch_assoc();
+  $jumlah_login = $result->num_rows;
+  $stmt->close();
 
   // Cek jika user ditemukan
   if ($jumlah_login == 1) {
@@ -29,12 +32,18 @@ if (isset($_POST['btnLogin'])) {
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIPENJALU</title>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('sipenjalu-theme');
+      document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
+    })();
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -42,9 +51,14 @@ if (isset($_POST['btnLogin'])) {
   <link rel="stylesheet" href="assets/css/login1.css">
 </head>
 
-<body class="">
+<body>
   <form method="post">
-    <section class="h-100 gradient-form" style="background-color: #eee;">
+    <section class="h-100 gradient-form">
+      <div class="theme-switch-wrapper">
+        <button class="btn theme-toggle" type="button" id="themeToggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-xl-10">
@@ -53,7 +67,7 @@ if (isset($_POST['btnLogin'])) {
                 <div class="col-lg-6">
                   <div class="card-body p-md-5 mx-md-4">
                     <div class="text-center">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 150px;" alt="logo">
+                      <img src="https://images.vexels.com/media/users/3/156814/isolated/preview/3905419df3d4ee163e00f778b6110da6-lotus-symbol-icon.png" style="width: 50px;" alt="logo">
                       <h4 class="mt-1 mb-5 pb-1">SIPENJALU</h4>
                     </div>
                     <div class="text-center">
@@ -96,29 +110,32 @@ if (isset($_POST['btnLogin'])) {
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+
+      function updateIcon(theme) {
+        const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+        toggle.innerHTML = '<i class="fas ' + icon + '"></i>';
+      }
+
+      if (toggle) {
+        updateIcon(root.getAttribute('data-theme'));
+        toggle.addEventListener('click', function() {
+          const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', nextTheme);
+          localStorage.setItem('sipenjalu-theme', nextTheme);
+          updateIcon(nextTheme);
+        });
+      }
+    })();
+  </script>
 </body>
 
 </html>
 
 
-<?php
-if (isset($_POST['btnLogin'])) {
-  $sql_login = "SELECT * FROM tb_pengguna WHERE username='" . $_POST['username'] . "' AND password='" . $_POST['password'] . "'";
-  $query_login = mysqli_query($koneksi, $sql_login);
-  $data_login = mysqli_fetch_array($query_login, MYSQLI_BOTH);
-  $jumlah_login = mysqli_num_rows($query_login);
 
-
-  if ($jumlah_login == 1) {
-    session_start();
-    $_SESSION["ses_id"] = $data_login["id_pengguna"];
-    $_SESSION["ses_nama"] = $data_login["nama_pengguna"];
-    $_SESSION["ses_level"] = $data_login["level"];
-    $_SESSION["ses_grup"] = $data_login["grup"];
-
-    echo "<script>window.location = 'index';</script>";
-  }
-}
-?>
 
 <!-- END -->

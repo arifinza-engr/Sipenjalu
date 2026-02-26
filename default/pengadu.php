@@ -15,62 +15,34 @@ while ($data = $sql->fetch_assoc()) {
 }
 
 ?>
-<h4 class="text-center mt-4" id="text-dinas">DINAS PERUMAHAN DAN KAWASAN PERMUKIMAN KAB PEMALANG</h4>
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-6 mb-4">
-      <a href="#" style="text-decoration: none; color: inherit;">
-        <div class="card card-3d" id="card-panel">
-          <div class="card-body text-center">
-            <span class="fs-1 text-danger">
-              <i class="fa fa-bell"></i>
-            </span>
-            <h1><?= $proses; ?></h1>
-            <p class="fw-bold">Pengaduan Menunggu</p>
-          </div>
-        </div>
-      </a>
-    </div>
+<div class="dashboard-header">
+  <h4>DINAS PERUMAHAN DAN KAWASAN PERMUKIMAN KAB PEMALANG</h4>
+</div>
 
-    <div class="col-md-3 col-sm-6 col-xs-6 mb-4">
-      <a href="#" style="text-decoration: none; color: inherit;">
-        <div class="card card-3d" id="card-panel">
-          <div class="card-body text-center">
-            <span class="fs-1 text-success">
-              <i class="fa fa-bell"></i>
-            </span>
-            <h1><?= $tangan; ?></h1>
-            <p class="fw-bold">Pengaduan Ditanggapi</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-md-3 col-sm-6 col-xs-6 mb-4">
-      <a href="#" style="text-decoration: none; color: inherit;">
-        <div class="card card-3d" id="card-panel">
-          <div class="card-body text-center">
-            <span class="fs-1 text-primary">
-              <i class="fa fa-bell"></i>
-            </span>
-            <h1><?= $sel; ?></h1>
-            <p class="fw-bold">Pengaduan Selesai</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-md-3 col-sm-6 col-xs-6 mb-4">
-      <a href="?page=aduan_tambah" style="text-decoration: none; color: inherit;">
-        <div class="card card-3d" id="card-panel">
-          <div class="card-body text-center">
-            <span class="fs-1">
-              <i class="fas fa-plus fa-1x mb-4 mt-4"></i>
-            </span>
-            <p class="fw-bold">Tambah Aduan</p>
-          </div>
-        </div>
-      </a>
-    </div>
+<div class="dashboard-grid">
+  <div class="dashboard-card status-pending">
+    <i class="fas fa-clock card-icon"></i>
+    <div class="card-number"><?= $proses; ?></div>
+    <p class="card-title">Pengaduan Menunggu</p>
   </div>
+
+  <div class="dashboard-card status-progress">
+    <i class="fas fa-reply card-icon"></i>
+    <div class="card-number"><?= $tangan; ?></div>
+    <p class="card-title">Pengaduan Ditanggapi</p>
+  </div>
+
+  <div class="dashboard-card status-completed">
+    <i class="fas fa-check-circle card-icon"></i>
+    <div class="card-number"><?= $sel; ?></div>
+    <p class="card-title">Pengaduan Selesai</p>
+  </div>
+
+  <a href="?page=aduan_tambah" style="text-decoration: none; color: inherit;">
+    <div class="dashboard-card status-add">
+      <i class="fas fa-plus card-icon"></i>
+      <div class="card-number" style="font-size: 2rem; margin-bottom: 1rem;">+</div>
+      <p class="card-title">Tambah Aduan</p>
+    </div>
+  </a>
 </div>

@@ -43,12 +43,18 @@ if (isset($_POST['btnLogin'])) {
 
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIPENJALU</title>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('sipenjalu-theme');
+      document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
+    })();
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -57,9 +63,14 @@ if (isset($_POST['btnLogin'])) {
   <link rel="stylesheet" href="assets/css/login1.css">
 </head>
 
-<body class="bg-light">
+<body>
 
-  <section class="h-100 gradient-form" style="background-color: #eee;">
+  <section class="h-100 gradient-form">
+    <div class="theme-switch-wrapper">
+      <button class="btn theme-toggle" type="button" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-xl-10">
@@ -69,7 +80,7 @@ if (isset($_POST['btnLogin'])) {
                 <div class="card-body p-md-5 mx-md-4">
 
                   <div class="text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 185px;" alt="logo">
+                    <img src="https://images.vexels.com/media/users/3/156814/isolated/preview/3905419df3d4ee163e00f778b6110da6-lotus-symbol-icon.png" style="width: 50px;" alt="logo">
                     <h4 class="mt-1 mb-5 pb-1">SIPENJALU</h4>
                   </div>
 
@@ -132,6 +143,27 @@ if (isset($_POST['btnLogin'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+
+      function updateIcon(theme) {
+        const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+        toggle.innerHTML = '<i class="fas ' + icon + '"></i>';
+      }
+
+      if (toggle) {
+        updateIcon(root.getAttribute('data-theme'));
+        toggle.addEventListener('click', function() {
+          const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', nextTheme);
+          localStorage.setItem('sipenjalu-theme', nextTheme);
+          updateIcon(nextTheme);
+        });
+      }
+    })();
+  </script>
 
 </body>
 

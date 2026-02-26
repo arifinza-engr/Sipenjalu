@@ -12,7 +12,7 @@ $data_cek = mysqli_fetch_array($query_cek, MYSQLI_BOTH);
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover" id="api">
+        <table class="table table-bordered" id="api">
           <thead>
             <tr>
               <th>No</th>
@@ -103,8 +103,10 @@ $data_cek = mysqli_fetch_array($query_cek, MYSQLI_BOTH);
 
 <?php
 if (isset($_POST['Ubah'])) {
-  $sql_ubah = "UPDATE tb_kunciapi SET nama='" . $_POST['nama'] . "', kunci='" . $_POST['kunci'] . "' WHERE id='" . $_POST['id'] . "'";
-  $query_ubah = mysqli_query($koneksi, $sql_ubah);
+  $stmt = $koneksi->prepare("UPDATE tb_kunciapi SET nama=?, kunci=? WHERE id=?");
+  $stmt->bind_param("sss", $_POST['nama'], $_POST['kunci'], $_POST['id']);
+  $query_ubah = $stmt->execute();
+  $stmt->close();
 
   if ($query_ubah) {
     echo "<script>
@@ -126,8 +128,10 @@ if (isset($_POST['Ubah'])) {
 }
 
 if (isset($_POST['Tambah'])) {
-  $sql_tambah = "INSERT INTO tb_kunciapi (nama, kunci) VALUES ('" . $_POST['add_nama'] . "', '" . $_POST['add_kunci'] . "')";
-  $query_tambah = mysqli_query($koneksi, $sql_tambah);
+  $stmt = $koneksi->prepare("INSERT INTO tb_kunciapi (nama, kunci) VALUES (?, ?)");
+  $stmt->bind_param("ss", $_POST['add_nama'], $_POST['add_kunci']);
+  $query_tambah = $stmt->execute();
+  $stmt->close();
 
   if ($query_tambah) {
     echo "<script>

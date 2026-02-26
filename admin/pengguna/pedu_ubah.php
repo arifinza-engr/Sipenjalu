@@ -1,9 +1,12 @@
 <?php
 
 if (isset($_GET['kode'])) {
-	$sql_cek = "SELECT * FROM tb_pengguna WHERE id_pengguna='" . $_GET['kode'] . "'";
-	$query_cek = mysqli_query($koneksi, $sql_cek);
-	$data_cek = mysqli_fetch_array($query_cek, MYSQLI_BOTH);
+	$stmt = $koneksi->prepare("SELECT * FROM tb_pengguna WHERE id_pengguna=?");
+	$stmt->bind_param("s", $_GET['kode']);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$data_cek = $result->fetch_array(MYSQLI_BOTH);
+	$stmt->close();
 }
 ?>
 
@@ -52,11 +55,10 @@ if (isset($_GET['kode'])) {
 
 if (isset($_POST['Ubah'])) {
 
-	$sql_ubah = "UPDATE tb_pengguna SET
-        username='" . $_POST['username'] . "',
-        password='" . $_POST['password'] . "'
-        WHERE id_pengguna='" . $_POST['id_pengguna'] . "'";
-	$query_ubah = mysqli_query($koneksi, $sql_ubah);
+	$stmt = $koneksi->prepare("UPDATE tb_pengguna SET username=?, password=? WHERE id_pengguna=?");
+	$stmt->bind_param("sss", $_POST['username'], $_POST['password'], $_POST['id_pengguna']);
+	$query_ubah = $stmt->execute();
+	$stmt->close();
 	if ($query_ubah) {
 		echo "<script>
         Swal.fire({title: 'Ubah Sukses',text: '',icon: 'success',confirmButtonText: 'OK'

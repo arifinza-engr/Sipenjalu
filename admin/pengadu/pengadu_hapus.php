@@ -1,10 +1,14 @@
 <?php
 if(isset($_GET['kode'])){
-            $sql_hapus = "DELETE FROM tb_pengadu WHERE id_pengadu='".$_GET['kode']."'";
-            $query_hapus = mysqli_query($koneksi, $sql_hapus);
+            $stmt1 = $koneksi->prepare("DELETE FROM tb_pengadu WHERE id_pengadu=?");
+            $stmt1->bind_param("s", $_GET['kode']);
+            $query_hapus = $stmt1->execute();
+            $stmt1->close();
 
-            $sql_hap = "DELETE FROM tb_pengguna WHERE id_pengguna='".$_GET['kode']."'";
-            $query_del = mysqli_query($koneksi, $sql_hap);
+            $stmt2 = $koneksi->prepare("DELETE FROM tb_pengguna WHERE id_pengguna=?");
+            $stmt2->bind_param("s", $_GET['kode']);
+            $query_del = $stmt2->execute();
+            $stmt2->close();
 
             if ($query_hapus && $query_del) {
                 echo "<script>

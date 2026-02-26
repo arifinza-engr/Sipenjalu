@@ -28,8 +28,10 @@
 
 if (isset($_POST['Simpan'])) {
 
-  $sql_simpan = "INSERT INTO tb_jenis (jenis) VALUES ('" . $_POST['jenis'] . "')";
-  $query_simpan = mysqli_query($koneksi, $sql_simpan);
+  $stmt = $koneksi->prepare("INSERT INTO tb_jenis (jenis) VALUES (?)");
+  $stmt->bind_param("s", $_POST['jenis']);
+  $query_simpan = $stmt->execute();
+  $stmt->close();
   if ($query_simpan) {
     echo "<script>
             Swal.fire({title: 'Tambah Sukses',text: '',icon: 'success',confirmButtonText: 'OK'
